@@ -3,15 +3,28 @@ import data from './data';
 function App() {
   const [limit, setLimit] = useState(1);
   const [paragraphs, setParagraphs] = useState([]);
-  console.log(data);
+  // console.log(data);
+  let paragraphRange = [];
   function generateText(e) {
     e.preventDefault();
-    console.log(data);
-    for (let p = 1; p <= limit; p++) {
-      setParagraphs([...paragraphs, ...data]);
+
+    if (limit <= 0 || limit < 0) {
+      setLimit(1);
+      setParagraphs([data[0]]);
+      console.log('limit is too low');
+    }
+    if (limit > data.length) {
+      setLimit(data.length);
+
+      console.log('max length of the array');
+    }
+
+    for (let p = 0; p <= limit - 1; p++) {
+      paragraphRange.push(data[p]);
+      setParagraphs(paragraphRange);
     }
   }
-
+  console.log(paragraphs);
   return (
     <>
       <section className="section-center">
@@ -29,9 +42,9 @@ function App() {
             generate
           </button>
         </form>
-        {paragraphs.map((paragraph) => {
+        {paragraphs.map((paragraph, index) => {
           return (
-            <article className="lorem-text">
+            <article className="lorem-text" key={index}>
               <p>{paragraph}</p>
             </article>
           );
